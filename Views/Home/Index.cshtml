@@ -1,0 +1,90 @@
+﻿@model IEnumerable<CrudAppWithImagesInMVC.Models.student>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@Html.Raw(TempData["InsertMessage"])
+@Html.Raw(TempData["UpdateMessage"])
+@Html.Raw(TempData["DeleteMessage"])
+@Html.Raw(TempData["LoginMessage"])
+
+<div class="row py-2">
+    <div class="col-md-3">
+        <h5 class="d-inline mr-2">Dashboard</h5>  @Html.ActionLink("Create New", "Create", "", new { @class = "btn btn-info btn-sm" })
+    </div>
+    <div class="col-md-6">
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+        {
+            <b>Search </b> @Html.RadioButton("searchby", "Name", true) <text>Name</text>
+            @Html.RadioButton("searchby", "Gender") <text>Gender</text>
+            @Html.TextBox("search") <input type="submit" value="Search" class="btn btn-outline-dark btn-sm"/>
+        }
+    </div>
+        <div class="col-md-3 text-right">
+            <span class="d-inline"><b>Welcome</b> @Session["Username"]</span>
+            <span class="d-inline">@Html.ActionLink("Logout", "Logout", "Home")</span>
+        </div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.age)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.standard)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.image_path)
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>*@
+            <th></th>
+        </tr>
+        @if (Model.Count() == 0)
+        {
+            <tr><td colspan="4"><p>No Record Found</p></td></tr>
+        }
+        else
+        {
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.age)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.standard)
+                    </td>
+                    <td>
+                        @Html.HiddenFor(modelItem => item.image_path)
+                        <img src="@Url.Content(item.image_path)" height="50" width="50" />
+                    </td>
+                    @*<td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>*@
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.id }, new { @class = "btn btn-outline-info btn-sm" })
+                        @Html.ActionLink("Details", "Details", new { id = item.id }, new { @class = "btn btn-outline-secondary btn-sm" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { @class = "btn btn-outline-danger btn-sm" })
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+
